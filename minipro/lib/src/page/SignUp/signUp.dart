@@ -1,11 +1,37 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/Controller/passwordController.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
+import 'package:minipro/src/page/Login/auth.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+  SignUpPage({super.key});
+
+  final emailController = TextEditingController();
+
+  final passwordController = TextEditingController();
+
+  Future<void> signUserUp() async {
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +43,18 @@ class SignUpPage extends StatelessWidget {
               padding: const EdgeInsets.only(
                   left: 15, right: 15, top: 46, bottom: 9),
               child: Center(
-                child: Container(
-                  width: 330,
-                  height: 180,
+                child: Text(
+                  "สมัครสมาชิก",
+                  style: GoogleFonts.nunito(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
+
+                // child: Container(
+                //   width: 330,
+                //   height: 180,
+                // ),
               ),
             ),
             Padding(
@@ -32,12 +66,13 @@ class SignUpPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 10),
                     Padding(
-                      padding: EdgeInsets.only(left: 30),
+                      padding: const EdgeInsets.only(left: 30),
                       child: Text(
-                        'Name',
+                        'ID',
                         style: GoogleFonts.nunito(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
@@ -47,27 +82,10 @@ class SignUpPage extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    _Name(),
+                    _Id(),
                     const SizedBox(height: 10),
                     Padding(
-                      padding: EdgeInsets.only(left: 30),
-                      child: Text(
-                        'Username',
-                        style: GoogleFonts.nunito(
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    _userName(),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30),
+                      padding: const EdgeInsets.only(left: 30),
                       child: Text(
                         'Password',
                         style: GoogleFonts.nunito(
@@ -84,7 +102,7 @@ class SignUpPage extends StatelessWidget {
                       height: 40,
                     ),
                     Center(
-                      child: _loginButton(),
+                      child: _signUpButton(context),
                     ),
                     const SizedBox(
                       height: 16,
@@ -94,7 +112,7 @@ class SignUpPage extends StatelessWidget {
                           style: GoogleFonts.nunito(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
-                              color: Color(0xFF595858))),
+                              color: const Color(0xFF595858))),
                     ),
                     const SizedBox(height: 20),
                     Center(
@@ -111,7 +129,7 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
-  Widget _Name() {
+  Widget _Id() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -125,6 +143,7 @@ class SignUpPage extends StatelessWidget {
         ],
       ),
       child: TextField(
+        controller: emailController,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
@@ -132,34 +151,7 @@ class SignUpPage extends StatelessWidget {
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(10),
           ),
-          labelText: 'Name',
-        ),
-      ),
-    );
-  }
-
-  Widget _userName() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromARGB(255, 120, 119, 119).withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          labelText: 'Username',
+          hintText: 'ID',
         ),
       ),
     );
@@ -167,21 +159,33 @@ class SignUpPage extends StatelessWidget {
 
   Widget _passWord() {
     return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(255, 120, 119, 119).withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
-          ],
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(255, 120, 119, 119).withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: passwordController,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          hintText: 'Password',
         ),
-        child: PasswordTextField());
+      ),
+    );
   }
 
-  Widget _loginButton() {
+  Widget _signUpButton(BuildContext context) {
     return Container(
       height: 40,
       width: 250,
@@ -197,22 +201,45 @@ class SignUpPage extends StatelessWidget {
         ],
       ),
       child: ElevatedButton(
-        onPressed: () {
-          Get.to(HomePage());
+        onPressed: () async {
+          await signUserUp();
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('สมัครสมาชิกสำเร็จ',
+                  style: GoogleFonts.nunito(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  )),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Get.to(() => AuthPage());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xFFEEC759),
+                  ),
+                  child: Text('ตกลง'),
+                ),
+              ],
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFEEC759),
-          // minimumSize: const Size(250, 40),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: Text('Sign Up',
-            style: GoogleFonts.nunito(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: Color(0xFF000000),
-            )),
+        child: Text(
+          'Sign Up',
+          style: GoogleFonts.nunito(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: const Color(0xFF000000),
+          ),
+        ),
       ),
     );
   }

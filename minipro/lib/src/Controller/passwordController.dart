@@ -9,10 +9,12 @@ class PasswordTextField extends StatefulWidget {
 
 class _PasswordTextFieldState extends State<PasswordTextField> {
   bool _isPasswordVisible = false;
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: passwordController,
       obscureText: !_isPasswordVisible,
       decoration: InputDecoration(
         filled: true,
@@ -21,7 +23,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(10),
         ),
-        labelText: 'Password',
+        hintText: 'Password',
         suffixIcon: IconButton(
           icon: Icon(
             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,

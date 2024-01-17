@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "278394342691",
+    "project_id": "housesell-dfad0",
+    "storage_bucket": "housesell-dfad0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278394342691:android:0584de1778ed2bece01096",
+        "android_client_info": {
+          "package_name": "com.example.minipro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCzdSyP5tMmoHrcn3JufSi-o6mxfpuY3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
