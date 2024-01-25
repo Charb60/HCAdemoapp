@@ -1,5 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
-
+import 'package:dio/dio.dart' as dio; // Use 'dio' as an alias
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,27 +6,122 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/Controller/passwordController.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
 import 'package:minipro/src/page/Login/auth.dart';
+import 'package:minipro/src/page/SignUp/signUpWithGoogle.dart';
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
 
-  final emailController = TextEditingController();
+  final idController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final _dio = dio.Dio();
+  // Future<void> _makeApiCall(
+  //     String idController, String passwordController) async {
+  //   final _dio = Dio();
+
+  //   try {
+  //     final formDataArgs = FormData.fromMap({
+  //       "idSignUp": idController,
+  //       "password": passwordController,
+  //     });
+
+  //     final response = await _dio.post(
+  //       "http://192.168.84.58:8080/api/v1/signup",
+  //       data: formDataArgs,
+  //     );
+
+  //     // Handle the API response as needed
+  //     print("API call successful. Response: ${response.data}");
+  //   } catch (e) {
+  //     // Handle errors
+  //     print("API call failed. Error: $e");
+  //   }
+  // }
 
   Future<void> signUserUp() async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text,
+        email: idController.text,
         password: passwordController.text,
       );
+
+      // Registration successful
+      Get.dialog(
+        AlertDialog(
+          title: Text(
+            'Registration Successful',
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          content: Text(
+            'You have successfully registered.',
+            style: GoogleFonts.nunito(
+              fontSize: 15,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text(
+                'OK',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     } on FirebaseAuthException catch (e) {
+      String errorMessage = '';
+
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        errorMessage = 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        errorMessage = 'The account already exists for that email.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'The Email is invalid';
       }
+
+      // Registration failed
+      Get.dialog(
+        AlertDialog(
+          title: Text(
+            'Registration Failed',
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          content: Text(
+            errorMessage,
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text(
+                'OK',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     } catch (e) {
       print(e);
     }
@@ -36,94 +130,91 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15, right: 15, top: 46, bottom: 9),
-              child: Center(
-                child: Text(
-                  "สมัครสมาชิก",
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-
-                // child: Container(
-                //   width: 330,
-                //   height: 180,
-                // ),
-              ),
+      appBar: AppBar(
+        title: Container(
+          padding: EdgeInsets.only(left: 70),
+          child: Text(
+            'สมัครสมาชิก',
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 0),
-              child: Container(
-                width: 330,
-                // height: 50,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Text(
-                        'ID',
-                        style: GoogleFonts.nunito(
-                          textStyle: const TextStyle(
+          ),
+        ),
+        backgroundColor: const Color(0xFF9bb8cd),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 15, right: 15, top: 85, bottom: 0),
+                child: Container(
+                  width: 330,
+                  // height: 50,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text(
+                          'ID',
+                          style: GoogleFonts.nunito(
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      _Id(),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text(
+                          'Password',
+                          style: GoogleFonts.nunito(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    _Id(),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Text(
-                        'Password',
-                        style: GoogleFonts.nunito(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
+                      const SizedBox(
+                        height: 5,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    _passWord(),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Center(
-                      child: _signUpButton(context),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Center(
-                      child: Text('Or',
-                          style: GoogleFonts.nunito(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: const Color(0xFF595858))),
-                    ),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: _signInWithGoogleButton(),
-                    ),
-                    const SizedBox(height: 105),
-                  ],
+                      _passWord(),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Center(
+                        child: _signUpButton(context),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Center(
+                        child: Text('Or',
+                            style: GoogleFonts.nunito(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: const Color(0xFF595858))),
+                      ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: _signInWithGoogleButton(),
+                      ),
+                      const SizedBox(height: 105),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -143,7 +234,7 @@ class SignUpPage extends StatelessWidget {
         ],
       ),
       child: TextField(
-        controller: emailController,
+        controller: idController,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
@@ -202,29 +293,23 @@ class SignUpPage extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () async {
-          await signUserUp();
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('สมัครสมาชิกสำเร็จ',
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  )),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Get.to(() => AuthPage());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFFEEC759),
-                  ),
-                  child: Text('ตกลง'),
-                ),
-              ],
-            ),
-          );
+          String idValue = idController.text;
+          String passwordValue = passwordController.text;
+          // await signUserUp();
+          final dio.FormData formDataArgs = dio.FormData.fromMap({
+            "idSignUp": idValue,
+            "password": passwordValue,
+          });
+
+          final args = {
+            "idSignUp": idValue,
+            "password": passwordValue,
+          };
+
+          final response = await _dio
+              .post("http://192.168.84.58:8080/api/v1/signup", data: args);
+
+          print(response.data);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFEEC759),
@@ -260,7 +345,9 @@ class SignUpPage extends StatelessWidget {
         ],
       ),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          // signInWithGoogle();
+        },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(

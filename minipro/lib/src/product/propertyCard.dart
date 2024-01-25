@@ -54,7 +54,7 @@ class PropertyCard extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
-                      color: Colors.black, // Change this to the desired color
+                      color: Colors.black,
                     ),
                   ),
                 ],

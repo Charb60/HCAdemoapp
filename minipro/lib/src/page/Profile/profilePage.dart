@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/page/Login/auth.dart';
 
 class Profile extends StatelessWidget {
@@ -14,9 +15,24 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(actions: [
-        IconButton(onPressed: signUserOut, icon: Icon(Icons.logout))
-      ]),
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            'บัญชีของคุณ',
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: signUserOut,
+            icon: Icon(Icons.logout),
+          ),
+        ],
+        backgroundColor: Color(0xFF9bb8cd),
+      ),
     );
   }
 }

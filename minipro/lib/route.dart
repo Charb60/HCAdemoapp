@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:minipro/src/AddProduct/addProduct.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
 import 'package:minipro/src/page/Login/auth.dart';
 import 'package:minipro/src/page/Login/loginPage.dart';
@@ -13,6 +14,7 @@ class AppRoute {
   static String splashScreen = "/splashScreen";
   static String auth = "/auth";
   static String profile = "/profile";
+  static String addProduct = "/addProduct";
 
   static String getHomeRoute() => home;
   static String getLoginRoute() => login;
@@ -20,6 +22,7 @@ class AppRoute {
   static String getSplashRoute() => splashScreen;
   static String getAuthRoute() => auth;
   static String getProfileRoute() => profile;
+  static String getAddproductRoute() => addProduct;
 
   static List<GetPage> routes = [
     GetPage(
@@ -47,6 +50,10 @@ class AppRoute {
     GetPage(
       name: profile,
       page: (() => Profile()),
+    ),
+    GetPage(
+      name: addProduct,
+      page: (() => AddProduct()),
     ),
   ];
 }

@@ -19,7 +19,6 @@ class SplashScreen extends StatelessWidget {
             if (FirebaseAuth.instance.currentUser != null) {
               return HomePage();
             } else {
-              
               return AuthPage();
             }
           } else {

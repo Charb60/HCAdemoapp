@@ -6,6 +6,7 @@ import 'package:minipro/route.dart';
 import 'package:minipro/src/Controller/passwordController.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
 import 'package:minipro/src/page/Login/auth.dart';
+import 'package:minipro/src/page/SignUp/signUpWithgoogle.dart';
 import 'package:minipro/src/page/SignUp/signup.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -21,12 +22,12 @@ class _LoginPageState extends State<LoginPage> {
 
   final passwordController = TextEditingController();
 
-  void signUserIn() async {
+  void signUserIn(BuildContext context) async {
     try {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(
+        builder: (context) => const Center(
           child: CircularProgressIndicator(),
         ),
       );
@@ -35,63 +36,91 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text,
         password: passwordController.text,
       );
-
-      await Future.delayed(Duration(seconds: 2));
+      // Get.dialog(
+      //   AlertDialog(
+      //     title: Text(
+      //       'Login Successful',
+      //       style: GoogleFonts.nunito(
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 15,
+      //       ),
+      //     ),
+      //     content: Text(
+      //       'You have successfully Login.',
+      //       style: GoogleFonts.nunito(
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 12,
+      //       ),
+      //     ),
+      //   ),
+      // );
+      await Future.delayed(const Duration(seconds: 2));
 
       Get.back();
 
       Get.off(() => HomePage());
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      String errorMessage = '';
+
+      if (e.code == 'invalid-email') {
+        errorMessage = 'No user found for that email.';
         // print('No user found for that email.');
-        wrongEmail();
-      } else if (e.code == 'wrong-password') {
+      } else if (e.code == 'invalid-credential') {
+        errorMessage = 'Wrong Email or Password';
         // print('Wrong password provided for that user.');
-        wrongPassword();
+      } else if (e.code == 'channel-error') {
+        errorMessage = 'No input Email or Password';
+        // print('No input Email Password');
       }
 
-      Navigator.of(context).pop();
+      Get.back();
+
+      // Show an error dialog
+      // ignore: use_build_context_synchronously
+      Get.dialog(
+        AlertDialog(
+          title: Text(
+            'Login Failed',
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          content: Text(
+            errorMessage,
+            style: GoogleFonts.nunito(
+              fontSize: 15,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text(
+                'OK',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     }
-  }
-
-  void wrongEmail() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Wrong Email'),
-        );
-      },
-    );
-  }
-
-  void wrongPassword() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Wrong Password'),
-        );
-      },
-    );
-  }
-
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    // try {
+    //   final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    //     email: emailController.text,
+    //     password: passwordController.text,
+    //   );
+    // } on FirebaseAuthException catch (e) {
+    //   if (e.code == 'user-not-found') {
+    //     print('No user found for that email.');
+    //   } else if (e.code == 'wrong-password') {
+    //     print('Wrong password provided for that user.');
+    //   }
+    // }
   }
 
   @override
@@ -176,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                     Center(
                       child: _signInWithGoogleButton(),
                     ),
-                    const SizedBox(height: 105),
+                    const SizedBox(height: 200),
                     Center(
                       child: _signUp(),
                     ),
@@ -275,7 +304,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          signUserIn();
+          signUserIn(context);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFEEC759),
@@ -311,7 +340,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          signInWithGoogle();
+          // signInWithGoogle();
         },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.zero,
@@ -346,7 +375,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: CircularProgressIndicator(),
               ),
             ));
-            Future.delayed(Duration(seconds: 1), () {
+            Future.delayed(const Duration(seconds: 1), () {
               Get.back();
 
               Get.to(() => SignUpPage());

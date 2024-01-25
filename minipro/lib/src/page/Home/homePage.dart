@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:minipro/src/AddProduct/addProduct.dart';
 import 'package:minipro/src/Controller/mainController.dart';
 import 'package:minipro/src/page/Profile/profilePage.dart';
 import 'package:minipro/src/product/product.dart';
@@ -38,7 +39,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 169),
+                        padding: const EdgeInsets.only(left: 156),
                         child: Container(
                           width: 50,
                           height: 50,
@@ -53,13 +54,13 @@ class HomePage extends StatelessWidget {
                               height: 40,
                             ),
                             onPressed: () {
-                              print('Add house button pressed');
+                              Get.to(() => AddProduct());
                             },
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 5),
+                        padding: const EdgeInsets.only(left: 8, right: 15),
                         child: Container(
                           width: 50,
                           height: 50,
@@ -81,7 +82,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -94,24 +95,24 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 15,
+              height: 5,
             ),
             Container(
-              // padding: const EdgeInsets.only(left: 15, right: 15),
+              // color: const Color.fromARGB(255, 232, 194, 194),
               child: _buildPropertyList(
                 label: 'House',
                 modelProducts: product.modelHouse,
               ),
             ),
             Container(
-              // padding: const EdgeInsets.only(left: 15, right: 15),
+              // color: Colors.blue,
               child: _buildPropertyList(
                 label: 'Condo',
                 modelProducts: product.modelCondo,
               ),
             ),
             Container(
-              // padding: const EdgeInsets.only(left: 15, right: 15),
+              // color: Colors.yellow,
               child: Stack(
                 children: [
                   _buildPropertyList(
