@@ -1,48 +1,119 @@
-// import 'dart:async';
-// import 'dart:convert';
+import 'dart:async';
 import 'package:dio/dio.dart' as dio;
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'dart:io';
-// import 'package:image_picker/image_picker.dart';
-import 'package:minipro/src/AddProduct/addProductController.dart';
-import 'package:minipro/src/page/Map/map.dart';
-// import 'package:minipro/src/page/Map/map.dart';
-import 'package:minipro/src/page/Map/mapController.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class AddProductController extends GetxController {
+  static Map<String, String> propertyTypeValues = {
+    'บ้าน': '1',
+    'คอนโด': '2',
+    'อพาร์ทเมนต์': '3',
+  };
+
+  static Map<String, String> roomRange = {
+    '1 ห้องนอน': '1',
+    '2 ห้องนอน': '2',
+    '3 ห้องนอน': '3',
+    '4 ห้องนอน': '4',
+  };
+  static Map<String, String> bathRoomRange = {
+    '1 ห้องน้ำ': '1',
+    '2 ห้องน้ำ': '2',
+    '3 ห้องน้ำ': '3',
+    '4 ห้องน้ำ': '4',
+  };
+  static Map<String, String> locationRange = {
+    'กทม.': '1',
+    'เชียงใหม่': '2',
+    'ภูเก็ต': '3',
+    'ชลบุรี': '4',
+  };
+  static Map<String, String> areaRange = {
+    '14 ตร.ว.': '1',
+    '17 ตร.ว.': '2',
+  };
+  static Map<String, String> floorRange = {
+    '1 ชั้น': '1',
+    '2 ชั้น': '2',
+    '3 ชั้น': '3',
+  };
+
+  Map<String, dynamic> getFormData() {
+    return {
+      'selectedPropertyType': AddProductController.selectedPropertyType.value,
+      'selectedRoomRange': AddProductController.selectedRoomRange.value,
+      'selectedBathroomRange': AddProductController.selectedBathRoomRange.value,
+      'selectedLocationRange': AddProductController.selectedLocationRange.value,
+      'selectedAreaRange': AddProductController.selectedAreaRange.value,
+      'selectedFloorRange': AddProductController.selectedFloorRange.value,
+      'isChecked': AddProductController.isChecked.value,
+    };
+  }
+
+  static RxString selectedPropertyType = ''.obs;
+  static RxString selectedRoomRange = '1 ห้องนอน'.obs;
+  static RxString selectedBathRoomRange = '1 ห้องน้ำ'.obs;
+  static RxString selectedLocationRange = 'กทม.'.obs;
+  static RxString selectedAreaRange = '14 ตร.ว.'.obs;
+  static RxString selectedFloorRange = '2 ชั้น'.obs;
+  static RxBool isChecked = false.obs;
+
+  static RxList<File> selectedImages = <File>[].obs;
+
+  static void selectImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      selectedImages.add(File(pickedFile.path));
+      print('Image selected: ${selectedImages.last.path}');
+    }
+  }
+
+  void toggleCheckbox() {
+    isChecked.value = !isChecked.value;
+    print(isChecked);
+  }
+
+  static void onPropertyTypeSelected(String propertyType) {
+    selectedPropertyType.value = propertyType;
+  }
+
+  static void onRoomRangeSelected(String roomRange) {
+    selectedRoomRange.value = roomRange;
+  }
+
+  static void onBathRoomRangeSelected(String bathRoomRange) {
+    selectedBathRoomRange.value = bathRoomRange;
+  }
+
+  static void onLocationRangeSelected(String locationRange) {
+    selectedLocationRange.value = locationRange;
+  }
+
+  static void onAreaRangeSelected(String areaRange) {
+    selectedAreaRange.value = areaRange;
+  }
+
+  static void onFloorRangeSelected(String floorRange) {
+    selectedFloorRange.value = floorRange;
+  }
+}
 
 class AddProduct extends StatelessWidget {
-  final String name;
-  final String price;
-  final String latitude;
-  final String longitude;
-  final String area;
-  // var latitude = ''.obs;
-  // var longitude = ''.obs;
-
-  AddProduct({
-    Key? key,
-    required this.name,
-    required this.price,
-    required this.latitude,
-    required this.longitude,
-    required this.area,
-  }) : super(key: key);
-
   final AddProductController controller = Get.put(AddProductController());
-
   final _dio = dio.Dio();
   final priceRangeController = TextEditingController();
   final nameController = TextEditingController();
   final titleController = TextEditingController();
-  final areaController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final MapController _mapController = Get.put(MapController(name, price));
-    // final MapController _mapController = Get.find<MapController>();
-
     return Scaffold(
       appBar: AppBar(
         title: Container(
@@ -120,9 +191,6 @@ class AddProduct extends StatelessWidget {
                 ),
                 child: TextField(
                   controller: priceRangeController,
-                  onChanged: (newValue) {
-                    AddProductController.selectedPriceRange.value = newValue;
-                  },
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFFD9D9D9),
@@ -172,7 +240,7 @@ class AddProduct extends StatelessWidget {
                           value: key,
                           child: Text(
                             '$key',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
@@ -221,7 +289,7 @@ class AddProduct extends StatelessWidget {
                           value: key,
                           child: Text(
                             '$key',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
@@ -270,7 +338,7 @@ class AddProduct extends StatelessWidget {
                           value: key,
                           child: Text(
                             '$key',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
@@ -303,23 +371,27 @@ class AddProduct extends StatelessWidget {
                   ],
                 ),
                 child: Center(
-                  child: Container(
-                    width: 300,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextField(
-                      controller: areaController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color(0xFFD9D9D9),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        hintText: 'ขนาดพื้นที่',
-                      ),
+                  child: Obx(
+                    () => DropdownButton<String>(
+                      value: AddProductController.selectedAreaRange.value,
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          AddProductController.onAreaRangeSelected(newValue);
+                        }
+                        print(newValue);
+                      },
+                      items:
+                          AddProductController.areaRange.keys.map((String key) {
+                        return DropdownMenuItem<String>(
+                          value: key,
+                          child: Text(
+                            '$key',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
@@ -362,7 +434,7 @@ class AddProduct extends StatelessWidget {
                           value: key,
                           child: Text(
                             '$key',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
@@ -497,11 +569,12 @@ class AddProduct extends StatelessWidget {
                       child: Center(
                         child: Obx(
                           () {
-                            return AddProductController.productImage.isNotEmpty
+                            return AddProductController
+                                    .selectedImages.isNotEmpty
                                 ? ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: AddProductController
-                                        .productImage.length,
+                                        .selectedImages.length,
                                     itemBuilder: (context, index) {
                                       return Container(
                                         margin: const EdgeInsets.all(8),
@@ -509,7 +582,7 @@ class AddProduct extends StatelessWidget {
                                         height: 100,
                                         child: Image.file(
                                           AddProductController
-                                              .productImage[index],
+                                              .selectedImages[index],
                                           fit: BoxFit.cover,
                                         ),
                                       );
@@ -553,47 +626,26 @@ class AddProduct extends StatelessWidget {
                   color: Color.fromARGB(255, 255, 255, 255),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
-                child: Obx(
-                  () => GoogleMap(
-                    onMapCreated: _mapController.onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      target: _mapController.defaultLocation,
-                      zoom: 11,
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  const Icon(
+                    Icons.add_location_alt_outlined,
+                    size: 40,
+                    color: Colors.grey,
+                  ),
+                  Text(
+                    'แผนที่',
+                    style: GoogleFonts.nunito(
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
-                    markers: Set<Marker>.of(_mapController.markers),
-                    onTap: (LatLng position) {
-                      _mapController.addMarker(position);
-                    },
-                  ),
-                ),
+                  )
+                ]),
               ),
             ),
-            Center(
-              child: Column(
-                children: [
-                  Obx(() =>
-                      Text('Latitude: ${AddProductController.latitude.value}')),
-                  Obx(() => Text(
-                      'Longitude: ${AddProductController.longitude.value}')),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => MapScreen(
-                            name: '',
-                            price: '',
-                            onLocationSelected: (LatLng location) {
-                              AddProductController.latitude.value =
-                                  location.latitude.toString();
-                              AddProductController.longitude.value =
-                                  location.longitude.toString();
-                            },
-                          ));
-                    },
-                    child: Text('Select Location'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
+            SizedBox(
               height: 30,
             ),
             Center(
@@ -618,36 +670,36 @@ class AddProduct extends StatelessWidget {
                     ),
                     child: TextButton(
                       onPressed: () async {
-                        AddProductController.selectedPriceRange.value =
+                        String selectedPriceRangeValue =
                             priceRangeController.text;
-                        AddProductController.productName.value =
-                            nameController.text;
-                        AddProductController.productTitle.value =
-                            titleController.text;
-                        // print('Get FormData');
-                        // print(await controller.getFormData());
+                        String nameValue = nameController.text;
+                        String titleValue = titleController.text;
+                        final dio.FormData formDataArgs =
+                            dio.FormData.fromMap(controller.getFormData());
 
-                        final dio.FormData formDataArgs = dio.FormData.fromMap(
-                            await controller.getFormData());
-
-                        print('Get FormData');
-                        print(await controller.getFormData());
+                        final args = {
+                          'selectedPropertyType':
+                              AddProductController.selectedPropertyType.value,
+                          'selectedPriceRange': selectedPriceRangeValue,
+                          'selectedRoomRange':
+                              AddProductController.selectedRoomRange.value,
+                          'selectedBathroomRange':
+                              AddProductController.selectedBathRoomRange.value,
+                          'selectedLocationRange':
+                              AddProductController.selectedLocationRange.value,
+                          'selectedAreaRange':
+                              AddProductController.selectedAreaRange.value,
+                          'selectedFloorRange':
+                              AddProductController.selectedFloorRange.value,
+                          'isChecked': AddProductController.isChecked.value,
+                          'productName': nameValue,
+                          'productTitle': titleValue,
+                        };
 
                         try {
-                          // final response = await _dio.post(
-                          //   // "http://192.168.84.58:8080/api/v1/addproduct",
-                          //   "http://10.0.2.2:8080/api/v1/addproduct",
-                          //   data: formDataArgs,
-                          // );
-
                           final response = await _dio.post(
-                            // "http://192.168.84.58:8080/api/v1/product-and-image",
-
-                            "http://10.0.2.2:8080/api/v1/product-and-image",
-                            data: formDataArgs,
-                            options: Options(
-                              headers: {'Content-Type': 'multipart/form-data'},
-                            ),
+                            "http://192.168.84.58:8080/api/v1/addproduct",
+                            data: args,
                           );
 
                           if (response.statusCode == 200) {
@@ -670,7 +722,7 @@ class AddProduct extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 6,
                   ),
                   Container(

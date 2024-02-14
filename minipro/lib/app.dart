@@ -3,9 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/route.dart';
-// import 'package:minipro/src/page/Login/loginPage.dart';
-// import 'package:minipro/src/page/Map/map.dart';
-// import 'package:minipro/src/page/SignUp/signUp.dart';
+import 'package:minipro/src/page/Login/loginPage.dart';
+import 'package:minipro/src/page/SignUp/signUp.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoute.getSplashRoute(),
       getPages: AppRoute.routes,
-      // home: MapScreen(),
+      // home: SignUpPage(),
     );
   }
 }

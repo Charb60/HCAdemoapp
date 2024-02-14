@@ -1,16 +1,131 @@
 import 'package:dio/dio.dart' as dio; // Use 'dio' as an alias
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:minipro/src/Controller/passwordController.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
+import 'package:minipro/src/page/Login/auth.dart';
+import 'package:minipro/src/page/SignUp/signUpWithGoogle.dart';
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
 
   final idController = TextEditingController();
+
   final passwordController = TextEditingController();
   final _dio = dio.Dio();
+  // Future<void> _makeApiCall(
+  //     String idController, String passwordController) async {
+  //   final _dio = Dio();
+
+  //   try {
+  //     final formDataArgs = FormData.fromMap({
+  //       "idSignUp": idController,
+  //       "password": passwordController,
+  //     });
+
+  //     final response = await _dio.post(
+  //       "http://192.168.84.58:8080/api/v1/signup",
+  //       data: formDataArgs,
+  //     );
+
+  //     // Handle the API response as needed
+  //     print("API call successful. Response: ${response.data}");
+  //   } catch (e) {
+  //     // Handle errors
+  //     print("API call failed. Error: $e");
+  //   }
+  // }
+
+  Future<void> signUserUp() async {
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: idController.text,
+        password: passwordController.text,
+      );
+
+      // Registration successful
+      Get.dialog(
+        AlertDialog(
+          title: Text(
+            'Registration Successful',
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          content: Text(
+            'You have successfully registered.',
+            style: GoogleFonts.nunito(
+              fontSize: 15,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text(
+                'OK',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = '';
+
+      if (e.code == 'weak-password') {
+        errorMessage = 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'The account already exists for that email.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'The Email is invalid';
+      }
+
+      // Registration failed
+      Get.dialog(
+        AlertDialog(
+          title: Text(
+            'Registration Failed',
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          content: Text(
+            errorMessage,
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text(
+                'OK',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +152,7 @@ class SignUpPage extends StatelessWidget {
                     left: 15, right: 15, top: 85, bottom: 0),
                 child: Container(
                   width: 330,
+                  // height: 50,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -179,87 +295,21 @@ class SignUpPage extends StatelessWidget {
         onPressed: () async {
           String idValue = idController.text;
           String passwordValue = passwordController.text;
+          // await signUserUp();
+          final dio.FormData formDataArgs = dio.FormData.fromMap({
+            "idSignUp": idValue,
+            "password": passwordValue,
+          });
 
           final args = {
             "idSignUp": idValue,
             "password": passwordValue,
           };
 
-          try {
-            final response = await _dio
-                // .post("http://192.168.84.58:8080/api/v1/signup", data: args);
-                .post("http://10.0.2.2:8080/api/v1/signup", data: args);
+          final response = await _dio
+              .post("http://192.168.84.58:8080/api/v1/signup", data: args);
 
-            print(response.data);
-
-            // Show success AlertDialog
-            Get.dialog(
-              AlertDialog(
-                title: Text(
-                  'Registration Successful',
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                ),
-                content: Text(
-                  'You have successfully registered.',
-                  style: GoogleFonts.nunito(
-                    fontSize: 15,
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Get.to(() => HomePage());
-                    },
-                    child: Text(
-                      'OK',
-                      style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          } catch (e) {
-            print("Error occurred: $e");
-
-            // Show error AlertDialog
-            Get.dialog(
-              AlertDialog(
-                title: Text(
-                  'Registration Failed',
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                ),
-                content: Text(
-                  'An error occurred during registration.',
-                  style: GoogleFonts.nunito(
-                    fontSize: 12,
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: Text(
-                      'OK',
-                      style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
+          print(response.data);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFEEC759),
@@ -312,4 +362,6 @@ class SignUpPage extends StatelessWidget {
       ),
     );
   }
-}
+}//end
+
+
