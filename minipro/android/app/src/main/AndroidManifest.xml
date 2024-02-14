@@ -5,6 +5,9 @@
         android:label="minipro"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+       
+    <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyAOVnD1f13f18rHzgY4Zjbc42VL0bPnyj4"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

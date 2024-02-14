@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:minipro/route.dart';
-import 'package:minipro/src/Controller/passwordController.dart';
+// // import 'package:minipro/route.dart';
+// import 'package:minipro/src/Controller/passwordController.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
-import 'package:minipro/src/page/Login/auth.dart';
-import 'package:minipro/src/page/SignUp/signUpWithgoogle.dart';
+// import 'package:minipro/src/page/Login/auth.dart';
+// import 'package:minipro/src/page/SignUp/signUpWithgoogle.dart';
 import 'package:minipro/src/page/SignUp/signup.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   @override

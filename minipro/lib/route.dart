@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:minipro/src/AddProduct/addProduct.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
 import 'package:minipro/src/page/Login/auth.dart';
 import 'package:minipro/src/page/Login/loginPage.dart';
+import 'package:minipro/src/page/Map/map.dart';
 import 'package:minipro/src/page/SignUp/signUp.dart';
 import 'package:minipro/src/page/Profile/profilePage.dart';
 import 'package:minipro/src/page/splashScreen.dart';
@@ -15,6 +17,7 @@ class AppRoute {
   static String auth = "/auth";
   static String profile = "/profile";
   static String addProduct = "/addProduct";
+  static String map = "/map";
 
   static String getHomeRoute() => home;
   static String getLoginRoute() => login;
@@ -23,6 +26,7 @@ class AppRoute {
   static String getAuthRoute() => auth;
   static String getProfileRoute() => profile;
   static String getAddproductRoute() => addProduct;
+  static String getMapRoute() => map;
 
   static List<GetPage> routes = [
     GetPage(
@@ -53,7 +57,21 @@ class AppRoute {
     ),
     GetPage(
       name: addProduct,
-      page: (() => AddProduct()),
+      page: (() => AddProduct(
+            name: "",
+            price: "",
+            latitude: "",
+            longitude: "",
+            area: "",
+          )),
+    ),
+    GetPage(
+      name: map,
+      page: () => MapScreen(
+        name: "",
+        price: "",
+        onLocationSelected: (LatLng location) {},
+      ),
     ),
   ];
 }
