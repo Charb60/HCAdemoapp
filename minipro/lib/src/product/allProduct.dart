@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:minipro/src/product/allProductCard.dart';
 import 'package:minipro/src/product/product.dart';
 import 'package:minipro/src/product/productModel.dart';
 import 'package:minipro/src/product/propertyCard.dart';
 
-class AllYourProduct extends StatelessWidget {
-  AllYourProduct({super.key});
+class AllProduct extends StatelessWidget {
+  AllProduct({super.key});
   final Product product = Product();
 
   @override
@@ -13,45 +15,27 @@ class AllYourProduct extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Container(
-          padding: const EdgeInsets.only(right: 45),
-          child: const Center(
-            child: Text(
-              'รายการทรัพย์สินของคุณ',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+          padding: const EdgeInsets.only(left: 45),
+          child: const Text(
+            'รายการทรัพย์สิน',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
           ),
         ),
         backgroundColor: const Color(0xFF9bb8cd),
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            child: _productList(),
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildPropertyList(
+            label: 'House',
+            modelProducts: product.modelHouse,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _productList() {
-    return Column(
-      children: [
-        _buildPropertyList(
-          label: 'House',
-          modelProducts: product.modelHouse,
-        ),
-        _buildPropertyList(
-          label: 'Condo',
-          modelProducts: product.modelCondo,
-        ),
-        _buildPropertyList(
-          label: 'Apartment',
-          modelProducts: product.modelApartment,
-        ),
-      ],
+        ],
+      )),
     );
   }
 
@@ -78,12 +62,12 @@ class AllYourProduct extends StatelessWidget {
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Row(
+          child: Column(
             children: [
               for (int index = 0; index < modelProducts.length; index++)
                 Padding(
                   padding: const EdgeInsets.only(left: 16, right: 2),
-                  child: PropertyCard(
+                  child: AllProductCard(
                     modelProduct: modelProducts[index],
                   ),
                 ),

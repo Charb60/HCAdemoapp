@@ -5,11 +5,14 @@ import 'package:minipro/src/page/Home/homePage.dart';
 import 'package:minipro/src/page/Login/auth.dart';
 import 'package:minipro/src/page/Login/loginPage.dart';
 import 'package:minipro/src/page/Map/map.dart';
+import 'package:minipro/src/page/Noti/notification.dart';
+import 'package:minipro/src/page/Password/chagePassPage.dart';
 import 'package:minipro/src/page/Profile/allYourProduct.dart';
 import 'package:minipro/src/page/Profile/editProfile.dart';
 import 'package:minipro/src/page/SignUp/signUp.dart';
 import 'package:minipro/src/page/Profile/profilePage.dart';
 import 'package:minipro/src/page/splashScreen.dart';
+import 'package:minipro/src/product/allProduct.dart';
 
 class AppRoute {
   static String home = "/home";
@@ -22,6 +25,9 @@ class AppRoute {
   static String map = "/map";
   static String editProfile = "/editProfile";
   static String allYourProduct = "/allYourProduct";
+  static String notification = "/notification";
+  static String chagePassPage = "/chagePassPage";
+  static String allProduct = "/allProduct";
 
   static String getHomeRoute() => home;
   static String getLoginRoute() => login;
@@ -33,6 +39,9 @@ class AppRoute {
   static String getMapRoute() => map;
   static String getEditProfile() => editProfile;
   static String getAllYourProduct() => allYourProduct;
+  static String getNotification() => notification;
+  static String getChagePassPage() => chagePassPage;
+  static String getAllProduct() => allProduct;
 
   static List<GetPage> routes = [
     GetPage(
@@ -86,6 +95,18 @@ class AppRoute {
     GetPage(
       name: allYourProduct,
       page: () => AllYourProduct(),
+    ),
+    GetPage(
+      name: notification,
+      page: () => NotificationPage(),
+    ),
+    GetPage(
+      name: chagePassPage,
+      page: () => ChagePassPage(),
+    ),
+    GetPage(
+      name: allProduct,
+      page: () => AllProduct(),
     ),
   ];
 }

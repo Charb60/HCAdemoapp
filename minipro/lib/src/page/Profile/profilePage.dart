@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/page/Login/auth.dart';
+import 'package:minipro/src/page/Noti/notification.dart';
+import 'package:minipro/src/page/Password/chagePassPage.dart';
+import 'package:minipro/src/page/Profile/allYourProduct.dart';
 import 'package:minipro/src/page/Profile/editProfile.dart';
 import 'package:minipro/src/user/user.dart';
 import 'package:minipro/src/user/userModel.dart';
@@ -183,7 +186,9 @@ class Profile extends StatelessWidget {
             ],
           ),
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => AllYourProduct());
+            },
             child: Text(
               'รายการทรัพย์สินของคุณ',
               style: GoogleFonts.nunito(
@@ -218,7 +223,9 @@ class Profile extends StatelessWidget {
             ],
           ),
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => NotificationPage());
+            },
             child: Text(
               'การแจ้งเตือน',
               style: GoogleFonts.nunito(
@@ -257,7 +264,9 @@ class Profile extends StatelessWidget {
             ],
           ),
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => ChagePassPage());
+            },
             child: Text(
               'รหัสผ่าน',
               style: GoogleFonts.nunito(

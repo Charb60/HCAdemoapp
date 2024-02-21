@@ -5,6 +5,7 @@ import 'package:minipro/src/AddProduct/addProduct.dart';
 import 'package:minipro/src/Controller/mainController.dart';
 import 'package:minipro/src/page/Home/customDrawer.dart';
 import 'package:minipro/src/page/Profile/profilePage.dart';
+import 'package:minipro/src/product/allProduct.dart';
 import 'package:minipro/src/product/product.dart';
 import 'package:minipro/src/product/productModel.dart';
 import 'package:minipro/src/product/propertyCard.dart';
@@ -111,6 +112,7 @@ class HomePage extends StatelessWidget {
               // color: const Color.fromARGB(255, 232, 194, 194),
               child: _buildPropertyList(
                 label: 'House',
+                allBT: '1',
                 modelProducts: product.modelHouse,
               ),
             ),
@@ -118,6 +120,7 @@ class HomePage extends StatelessWidget {
               // color: Colors.blue,
               child: _buildPropertyList(
                 label: 'Condo',
+                allBT: '2',
                 modelProducts: product.modelCondo,
               ),
             ),
@@ -127,6 +130,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   _buildPropertyList(
                     label: 'Apartment',
+                    allBT: '3',
                     modelProducts: product.modelApartment,
                   ),
                   Padding(
@@ -159,7 +163,9 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildPropertyList(
-      {required String label, required List<ModelProduct> modelProducts}) {
+      {required String label,
+      required String allBT,
+      required List<ModelProduct> modelProducts}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -177,7 +183,10 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => AllProduct());
+                  print(allBT.toString());
+                },
                 child: Text(
                   'All',
                   style: GoogleFonts.nunito(
@@ -196,7 +205,7 @@ class HomePage extends StatelessWidget {
             children: [
               for (int index = 0; index < modelProducts.length; index++)
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  padding: const EdgeInsets.only(left: 16, right: 2),
                   child: PropertyCard(
                     modelProduct: modelProducts[index],
                   ),
