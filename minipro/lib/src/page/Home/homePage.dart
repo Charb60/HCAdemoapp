@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/AddProduct/addProduct.dart';
 import 'package:minipro/src/Controller/mainController.dart';
+import 'package:minipro/src/page/Home/customDrawer.dart';
 import 'package:minipro/src/page/Profile/profilePage.dart';
 import 'package:minipro/src/product/product.dart';
 import 'package:minipro/src/product/productModel.dart';
@@ -10,12 +11,15 @@ import 'package:minipro/src/product/propertyCard.dart';
 
 class HomePage extends StatelessWidget {
   final Product product = Product();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   HomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: _buildDrawer(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +58,13 @@ class HomePage extends StatelessWidget {
                               height: 40,
                             ),
                             onPressed: () {
-                              Get.to(() => AddProduct());
+                              Get.to(() => AddProduct(
+                                    name: "",
+                                    price: "",
+                                    latitude: "",
+                                    longitude: "",
+                                    area: "",
+                                  ));
                             },
                           ),
                         ),
@@ -75,7 +85,7 @@ class HomePage extends StatelessWidget {
                               height: 40,
                             ),
                             onPressed: () {
-                              Get.to(() => Profile());
+                              Get.to(() => const Profile());
                             },
                           ),
                         ),
@@ -94,7 +104,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Container(
@@ -154,7 +164,7 @@ class HomePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 28, right: 10),
+          padding: const EdgeInsets.only(left: 28, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -229,7 +239,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           prefixIcon: const SizedBox(width: 5),
-          suffixIcon: Icon(
+          suffixIcon: const Icon(
             Icons.search,
             color: Color(0xFF515050),
           ),
@@ -261,9 +271,15 @@ class HomePage extends StatelessWidget {
             width: 50,
             height: 50,
           ),
-          onPressed: () {},
+          onPressed: () {
+            _scaffoldKey.currentState!.openEndDrawer();
+          },
         ),
       ),
     );
   }
+}
+
+Widget _buildDrawer() {
+  return CustomDrawer();
 }

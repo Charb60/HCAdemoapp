@@ -16,7 +16,7 @@ class PropertyCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
@@ -28,7 +28,7 @@ class PropertyCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.only(left: 10),
             child: Text(modelProduct.title,
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
@@ -37,7 +37,7 @@ class PropertyCard extends StatelessWidget {
                 )),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.only(left: 10),
             child: RichText(
               text: TextSpan(
                 children: [
@@ -49,7 +49,7 @@ class PropertyCard extends StatelessWidget {
                       color: const Color(0xFFB1C381),
                     ),
                   ),
-                  TextSpan(
+                  const TextSpan(
                     text: ' บาท',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class PropertyCard extends StatelessWidget {
           //   height: 5,
           // ),
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.only(left: 10),
             child:
                 Text('${modelProduct.area} ตร.ว , ${modelProduct.size} ตร.ม.',
                     style: GoogleFonts.nunito(

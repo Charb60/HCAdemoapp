@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
 import 'package:minipro/src/page/Login/auth.dart';
-import 'package:minipro/src/page/Login/loginPage.dart'; // import หน้าที่ต้องการแสดงหลังจาก Splash screen
+// import 'package:minipro/src/page/Login/loginPage.dart';
 
 class SplashScreen extends StatelessWidget {
   Future<void> loadData() async {
