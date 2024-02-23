@@ -52,7 +52,7 @@ class AddProductController extends GetxController {
     // }
     return {
       "productData": json.encode({
-        'productId': AddProductController.selectedProductId.value,
+        // 'productId': AddProductController.selectedProductId.value,
         'selectedPropertyType': AddProductController.selectedPropertyType.value,
         'selectedPriceRange': AddProductController.selectedPriceRange.value,
         'selectedRoomRange': AddProductController.selectedRoomRange.value,
@@ -69,11 +69,10 @@ class AddProductController extends GetxController {
         'longitude': AddProductController.longitude.value,
       }),
       // "image": fileList,
-      // "productImage": await dio.MultipartFile.fromFile(
-      //   AddProductController.productImage.last.absolute.path,
-      //   filename: 'image.jpg',
-      // )
-     
+      "image": await dio.MultipartFile.fromFile(
+        AddProductController.image.last.absolute.path,
+        filename: 'image.jpg',
+      )
     };
   }
 

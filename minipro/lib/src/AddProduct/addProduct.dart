@@ -14,21 +14,21 @@ import 'package:minipro/src/page/Map/map.dart';
 import 'package:minipro/src/page/Map/mapController.dart';
 
 class AddProduct extends StatelessWidget {
-  final String name;
-  final String price;
+  final String productName;
+  final String selectedPriceRange;
   final String latitude;
   final String longitude;
-  final String area;
+  final String selectedAreaRange;
   // var latitude = ''.obs;
   // var longitude = ''.obs;
 
   AddProduct({
     Key? key,
-    required this.name,
-    required this.price,
+    required this.productName,
+    required this.selectedPriceRange,
     required this.latitude,
     required this.longitude,
-    required this.area,
+    required this.selectedAreaRange,
   }) : super(key: key);
 
   final AddProductController controller = Get.put(AddProductController());
@@ -40,7 +40,8 @@ class AddProduct extends StatelessWidget {
   final areaController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final MapController _mapController = Get.put(MapController(name, price));
+    final MapController _mapController =
+        Get.put(MapController(productName, selectedPriceRange));
     // final MapController _mapController = Get.find<MapController>();
 
     return Scaffold(
@@ -547,22 +548,25 @@ class AddProduct extends StatelessWidget {
             Center(
               child: Container(
                 width: 300,
-                height: 200,
+                height: 220,
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 255, 255, 255),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
-                child: Obx(
-                  () => GoogleMap(
-                    onMapCreated: _mapController.onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      target: _mapController.defaultLocation,
-                      zoom: 11,
+                child: GestureDetector(
+                  onVerticalDragUpdate: (_) {},
+                  child: Obx(
+                    () => GoogleMap(
+                      onMapCreated: _mapController.onMapCreated,
+                      initialCameraPosition: CameraPosition(
+                        target: _mapController.defaultLocation,
+                        zoom: 11,
+                      ),
+                      markers: Set<Marker>.of(_mapController.markers),
+                      onTap: (LatLng position) {
+                        _mapController.addMarker(position);
+                      },
                     ),
-                    markers: Set<Marker>.of(_mapController.markers),
-                    onTap: (LatLng position) {
-                      _mapController.addMarker(position);
-                    },
                   ),
                 ),
               ),
@@ -643,9 +647,10 @@ class AddProduct extends StatelessWidget {
                           // );
 
                           final response = await _dio.post(
-                            "http://192.168.84.58:8080/api/v1/addproduct",
+                            // "http://192.168.84.58:8080/api/v1/addproduct",
 
                             // "http://192.168.84.58:8080/api/v1/product-and-image",
+                            "http://192.168.84.58:8080/api/v1/images-upload",
 
                             // "http://10.0.2.2:8080/api/v1/product-and-image",
                             data: formDataArgs,

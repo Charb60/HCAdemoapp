@@ -19,8 +19,8 @@ class MapController extends GetxController {
 // }
 
   late GoogleMapController mapController;
-  late String name;
-  late String price;
+  late String productName;
+  late String selectedPriceRange;
 
   final LatLng center = const LatLng(13.736717, 100.523186);
   final LatLng defaultLocation = const LatLng(13.736717, 100.523186);
@@ -30,7 +30,7 @@ class MapController extends GetxController {
   final markers = <Marker>{}.obs;
 
   final Dio dio = Dio();
-  MapController(this.name, this.price);
+  MapController(this.productName, this.selectedPriceRange);
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -42,10 +42,10 @@ class MapController extends GetxController {
         markerId: MarkerId(position.toString()),
         position: position,
         infoWindow: InfoWindow(
-          title: name,
+          title: productName,
           snippet:
               // 'ละติจูด: ${position.latitude}\nลองจิจูด: ${position.longitude}\nราคา: $price',
-              'ราคา: $price',
+              'ราคา: $selectedPriceRange',
         ),
       ),
     );
@@ -58,9 +58,9 @@ class MapController extends GetxController {
         markerId: MarkerId(position.toString()),
         position: position,
         infoWindow: InfoWindow(
-          title: name,
+          title: productName,
           // snippet: snippet,
-          snippet: 'ราคา: $price',
+          snippet: 'ราคา: $selectedPriceRange',
         ),
       ),
     );

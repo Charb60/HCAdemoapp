@@ -27,7 +27,7 @@ class AllProductCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: Text(modelProduct.title,
+            child: Text(modelProduct.productName,
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
@@ -37,9 +37,9 @@ class AllProductCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: Text(
-                modelProduct.bedroom.toString() +
+                modelProduct.selectedRoomRange.toString() +
                     " ห้องนอน " +
-                    modelProduct.bathroom.toString() +
+                    modelProduct.selectedBathRoomRange.toString() +
                     " ห้องน้ำ ",
                 style: GoogleFonts.nunito(
                   fontSize: 15,
@@ -48,7 +48,7 @@ class AllProductCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: Text(modelProduct.floor.toString() + " ชั้น",
+            child: Text(modelProduct.selectedFloorRange.toString() + " ชั้น",
                 style: GoogleFonts.nunito(
                   fontSize: 15,
                   color: const Color(0xFF000000),
@@ -56,7 +56,7 @@ class AllProductCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: Text(modelProduct.location.toString(),
+            child: Text(modelProduct.selectedLocationRange.toString(),
                 style: GoogleFonts.nunito(
                   fontSize: 15,
                   color: const Color(0xFF000000),
@@ -67,7 +67,7 @@ class AllProductCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  '${modelProduct.area} ตร.ว , ${modelProduct.size} ตร.ม.',
+                  '${modelProduct.selectedAreaRange} ตร.ว',
                   style: GoogleFonts.nunito(
                     // fontWeight: FontWeight.bold,
                     fontSize: 15,
@@ -76,7 +76,7 @@ class AllProductCard extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 80,
+                width: 150,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
@@ -84,7 +84,7 @@ class AllProductCard extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: modelProduct.price,
+                        text: modelProduct.selectedPriceRange,
                         style: GoogleFonts.nunito(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,

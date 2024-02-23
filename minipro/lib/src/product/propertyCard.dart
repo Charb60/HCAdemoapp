@@ -27,7 +27,7 @@ class PropertyCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: Text(modelProduct.title,
+            child: Text(modelProduct.productName,
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
@@ -40,7 +40,7 @@ class PropertyCard extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: modelProduct.price,
+                    text: modelProduct.selectedPriceRange,
                     style: GoogleFonts.nunito(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
@@ -65,13 +65,13 @@ class PropertyCard extends StatelessWidget {
           // ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child:
-                Text('${modelProduct.area} ตร.ว , ${modelProduct.size} ตร.ม.',
-                    style: GoogleFonts.nunito(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                      color: const Color(0xFF000000),
-                    )),
+            child: Text(
+                '${modelProduct.selectedAreaRange} ตร.ว ',
+                style: GoogleFonts.nunito(
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                  color: const Color(0xFF000000),
+                )),
           ),
         ],
       ),

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/AddProduct/addProduct.dart';
 import 'package:minipro/src/Controller/mainController.dart';
+import 'package:minipro/src/ProductDetailPage/productDetailPage.dart';
+import 'package:minipro/src/page/ChatPage/Chat.dart';
 import 'package:minipro/src/page/Home/customDrawer.dart';
 import 'package:minipro/src/page/Profile/profilePage.dart';
 import 'package:minipro/src/product/allProduct.dart';
@@ -60,11 +62,11 @@ class HomePage extends StatelessWidget {
                             ),
                             onPressed: () {
                               Get.to(() => AddProduct(
-                                    name: "",
-                                    price: "",
+                                    productName: "",
+                                    selectedPriceRange: "",
                                     latitude: "",
                                     longitude: "",
-                                    area: "",
+                                    selectedAreaRange: "",
                                   ));
                             },
                           ),
@@ -149,7 +151,9 @@ class HomePage extends StatelessWidget {
                           width: 40,
                           height: 40,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => ChatPage());
+                        },
                       ),
                     ),
                   ),
@@ -184,7 +188,7 @@ class HomePage extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Get.to(() => AllProduct());
+                  Get.to(() => AllProduct(categoryType: allBT));
                   print(allBT.toString());
                 },
                 child: Text(
@@ -206,8 +210,20 @@ class HomePage extends StatelessWidget {
               for (int index = 0; index < modelProducts.length; index++)
                 Padding(
                   padding: const EdgeInsets.only(left: 16, right: 2),
-                  child: PropertyCard(
-                    modelProduct: modelProducts[index],
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(() => ProductDetailPage(
+                            modelProduct: modelProducts[index],
+                            productName: '',
+                            selectedPriceRange: '',
+                            latitude: '',
+                            longitude: '',
+                            selectedAreaRange: '',
+                          ));
+                    },
+                    child: PropertyCard(
+                      modelProduct: modelProducts[index],
+                    ),
                   ),
                 ),
             ],

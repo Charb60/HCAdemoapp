@@ -7,8 +7,10 @@ import 'package:minipro/src/product/productModel.dart';
 import 'package:minipro/src/product/propertyCard.dart';
 
 class AllProduct extends StatelessWidget {
-  AllProduct({super.key});
+  // AllProduct({super.key});
   final Product product = Product();
+  final String categoryType;
+  AllProduct({Key? key, required this.categoryType});
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +29,30 @@ class AllProduct extends StatelessWidget {
         backgroundColor: const Color(0xFF9bb8cd),
       ),
       body: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _buildPropertyList(
-            label: 'House',
-            modelProducts: product.modelHouse,
-          ),
-        ],
-      )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildPropertyList(
+              label: categoryType,
+              modelProducts: getProductModelByCategory(categoryType),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  List<ModelProduct> getProductModelByCategory(String categoryType) {
+    switch (categoryType) {
+      case '1':
+        return product.modelHouse;
+      case '2':
+        return product.modelCondo;
+      case '3':
+        return product.modelApartment;
+      default:
+        return [];
+    }
   }
 
   Widget _buildPropertyList(
@@ -44,22 +60,6 @@ class AllProduct extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 28, right: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                label,
-                style: GoogleFonts.nunito(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: const Color(0xFF000000),
-                ),
-              ),
-            ],
-          ),
-        ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Column(

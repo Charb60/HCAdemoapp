@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:minipro/src/AddProduct/addProduct.dart';
 import 'package:minipro/src/product/product.dart';
 import 'package:minipro/src/product/productModel.dart';
 import 'package:minipro/src/product/propertyCard.dart';
@@ -51,6 +53,31 @@ class AllYourProduct extends StatelessWidget {
           label: 'Apartment',
           modelProducts: product.modelApartment,
         ),
+        Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 310, top: 60),
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 297, top: 47 ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.add_circle,
+                  size: 60,
+                ),
+                onPressed: () {},
+              ),
+            )
+          ],
+        )
       ],
     );
   }

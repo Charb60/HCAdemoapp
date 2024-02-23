@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:minipro/src/AddProduct/addProduct.dart';
+import 'package:minipro/src/ProductDetailPage/productDetailPage.dart';
+import 'package:minipro/src/page/ChatPage/Chat.dart';
+import 'package:minipro/src/page/ChatPage/appointment.dart';
 import 'package:minipro/src/page/Home/homePage.dart';
 import 'package:minipro/src/page/Login/auth.dart';
 import 'package:minipro/src/page/Login/loginPage.dart';
@@ -13,6 +17,7 @@ import 'package:minipro/src/page/SignUp/signUp.dart';
 import 'package:minipro/src/page/Profile/profilePage.dart';
 import 'package:minipro/src/page/splashScreen.dart';
 import 'package:minipro/src/product/allProduct.dart';
+import 'package:minipro/src/product/productModel.dart';
 
 class AppRoute {
   static String home = "/home";
@@ -28,6 +33,9 @@ class AppRoute {
   static String notification = "/notification";
   static String chagePassPage = "/chagePassPage";
   static String allProduct = "/allProduct";
+  static String productDetailPage = "/productDetailPage";
+  static String chatPage = "/chatPage";
+  static String appointment = "/appointment";
 
   static String getHomeRoute() => home;
   static String getLoginRoute() => login;
@@ -42,6 +50,9 @@ class AppRoute {
   static String getNotification() => notification;
   static String getChagePassPage() => chagePassPage;
   static String getAllProduct() => allProduct;
+  static String getProductDetailPage() => productDetailPage;
+  static IconData getChatPage() => Icons.arrow_back_rounded;
+  static String getAppointment() => appointment;
 
   static List<GetPage> routes = [
     GetPage(
@@ -73,11 +84,11 @@ class AppRoute {
     GetPage(
       name: addProduct,
       page: (() => AddProduct(
-            name: "",
-            price: "",
+            productName: "",
+            selectedPriceRange: "",
             latitude: "",
             longitude: "",
-            area: "",
+            selectedAreaRange: "",
           )),
     ),
     GetPage(
@@ -106,7 +117,42 @@ class AppRoute {
     ),
     GetPage(
       name: allProduct,
-      page: () => AllProduct(),
+      page: () => AllProduct(
+        categoryType: '',
+      ),
+    ),
+    GetPage(
+      name: productDetailPage,
+      page: () => ProductDetailPage(
+        modelProduct: ModelProduct(
+          image: '',
+          selectedPropertyType: '',
+          selectedPriceRange: '',
+          selectedAreaRange: 0,
+          selectedRoomRange: 0,
+          selectedBathRoomRange: 0,
+          selectedLocationRange: '',
+          selectedFloorRange: 0,
+          isChecked: 0,
+          productName: '',
+          productTitle: '',
+          latitude: 0.0,
+          longitude: 0.0,
+        ),
+        productName: '',
+        selectedPriceRange: '',
+        latitude: '',
+        longitude: '',
+        selectedAreaRange: '',
+      ),
+    ),
+    GetPage(
+      name: chatPage,
+      page: () => ChatPage(),
+    ),
+    GetPage(
+      name: appointment,
+      page: () => Appointment(),
     ),
   ];
 }
