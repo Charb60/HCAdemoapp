@@ -1,11 +1,33 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:minipro/src/user/user.dart';
 import 'package:minipro/src/user/userModel.dart';
 
+class Controller extends GetxController {
+  Rx<File?> imageFile = Rx<File?>(null);
+
+  Future<void> selectImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      imageFile.value = File(image.path);
+      // อัปเดตรูปภาพของผู้ใช้ใน Users หรือ ModelUser
+      Users().modelUser[0].userImage =
+          image.path; // ให้แก้ตามโครงสร้างข้อมูลของคุณ
+      print(imageFile.value!.path);
+    }
+  }
+}
+
 class EditProfile extends StatelessWidget {
-  const EditProfile({super.key});
+  EditProfile({super.key});
+  final Controller controller = Get.put(Controller());
+
   @override
   Widget build(BuildContext context) {
     final user = Users().modelUser[0];
@@ -69,7 +91,9 @@ class EditProfile extends StatelessWidget {
             padding: EdgeInsets.only(left: 231, top: 1),
             child: IconButton(
               icon: Icon(Icons.add_circle_outline),
-              onPressed: () {},
+              onPressed: () {
+                controller.selectImage();
+              },
             ),
           ),
           Container(
@@ -162,7 +186,27 @@ class EditProfile extends StatelessWidget {
         ],
       ),
       child: TextButton(
-        onPressed: () async {},
+        onPressed: () async {
+          Get.defaultDialog(
+            title: 'ยืนยันการบันทึก',
+            middleText: 'คุณต้องการบันทึกข้อมูลหรือไม่?',
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back(); // ปิด AlertDialog
+                },
+                child: Text('ยกเลิก'),
+              ),
+              TextButton(
+                onPressed: () {
+                  // ตรวจสอบและบันทึกข้อมูลที่นี่
+                  Get.back(); // ปิด AlertDialog
+                },
+                child: Text('ยืนยัน'),
+              ),
+            ],
+          );
+        },
         child: Text(
           'บันทึก',
           style: GoogleFonts.nunito(

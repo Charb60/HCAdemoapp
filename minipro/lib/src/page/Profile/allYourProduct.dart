@@ -21,7 +21,7 @@ class AllYourProduct extends StatelessWidget {
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: const Color(0xFFFFFFFF),
+                  color: const Color(0xFF000000),
                 )),
           ),
         ),
@@ -72,7 +72,14 @@ class AllYourProduct extends StatelessWidget {
                   Icons.add_circle,
                   size: 60,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => AddProduct(
+                      productName: '',
+                      selectedPriceRange: '',
+                      latitude: '',
+                      longitude: '',
+                      selectedAreaRange: ''));
+                },
               ),
             )
           ],

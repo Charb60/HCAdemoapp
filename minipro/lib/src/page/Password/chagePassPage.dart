@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChagePassPage extends StatefulWidget {
@@ -131,7 +132,27 @@ class _PassPageState extends State<ChagePassPage> {
         ],
       ),
       child: TextButton(
-        onPressed: () async {},
+        onPressed: () async {
+          Get.defaultDialog(
+            title: 'ยืนยันการบันทึก',
+            middleText: 'คุณต้องการเปลี่ยนรหัสผ่านหรือไม่?',
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back(); // ปิด AlertDialog
+                },
+                child: Text('ยกเลิก'),
+              ),
+              TextButton(
+                onPressed: () {
+                  // ตรวจสอบและบันทึกข้อมูลที่นี่
+                  Get.back(); // ปิด AlertDialog
+                },
+                child: Text('ยืนยัน'),
+              ),
+            ],
+          );
+        },
         child: Text(
           'บันทึก',
           style: GoogleFonts.nunito(
