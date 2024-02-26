@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:minipro/src/page/Map/mapController.dart';
 // import 'package:dio/dio.dart' as dio;
@@ -34,7 +35,12 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Map Marker Demo'),
+        title: Text('เลือกที่ตั้งของคุณ',
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: const Color(0xFFFFFFFF),
+            )),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
@@ -45,6 +51,7 @@ class _MapScreenState extends State<MapScreen> {
             },
           ),
         ],
+        backgroundColor: const Color(0xFF9bb8cd),
       ),
       body: GoogleMap(
         onMapCreated: mapController.onMapCreated,

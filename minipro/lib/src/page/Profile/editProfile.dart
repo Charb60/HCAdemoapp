@@ -13,13 +13,12 @@ class EditProfile extends StatelessWidget {
       appBar: AppBar(
         title: Container(
           padding: const EdgeInsets.only(left: 45),
-          child: const Text(
-            'แก้ไขบัญชีของคุณ',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
+          child: Text('แก้ไขบัญชีของคุณ',
+              style: GoogleFonts.nunito(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: const Color(0xFFFFFFFF),
+              )),
         ),
         backgroundColor: const Color(0xFF9bb8cd),
       ),

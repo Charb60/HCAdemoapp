@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/page/Noti/data.dart';
 import 'package:minipro/src/page/Noti/dataCard.dart';
 import 'package:minipro/src/page/Noti/dataModel.dart'; // เพิ่มบรรทัดนี้เข้ามา
@@ -16,14 +17,13 @@ class NotificationPage extends StatelessWidget {
       appBar: AppBar(
         title: Container(
           padding: const EdgeInsets.only(right: 45),
-          child: const Center(
-            child: Text(
-              'การแจ้งเตือน',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+          child: Center(
+            child: Text('การแจ้งเตือน',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: const Color(0xFFFFFFFF),
+                )),
           ),
         ),
         backgroundColor: const Color(0xFF9bb8cd),

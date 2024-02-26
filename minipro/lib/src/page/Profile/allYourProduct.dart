@@ -16,14 +16,13 @@ class AllYourProduct extends StatelessWidget {
       appBar: AppBar(
         title: Container(
           padding: const EdgeInsets.only(right: 45),
-          child: const Center(
-            child: Text(
-              'รายการทรัพย์สินของคุณ',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+          child: Center(
+            child: Text('รายการทรัพย์สินของคุณ',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: const Color(0xFFFFFFFF),
+                )),
           ),
         ),
         backgroundColor: const Color(0xFF9bb8cd),
@@ -67,7 +66,7 @@ class AllYourProduct extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(left: 297, top: 47 ),
+              padding: EdgeInsets.only(left: 297, top: 47),
               child: IconButton(
                 icon: Icon(
                   Icons.add_circle,
