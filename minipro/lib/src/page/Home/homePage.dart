@@ -15,11 +15,14 @@ import 'package:minipro/src/product/propertyCard.dart';
 class HomePage extends StatelessWidget {
   final Product product = Product();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final TextEditingController _searchController = TextEditingController();
+  final RxList<ModelProduct> _filteredProducts = <ModelProduct>[].obs;
 
   HomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    _filteredProducts.addAll(product.modelHouse);
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: _buildDrawer(),
@@ -36,7 +39,7 @@ class HomePage extends StatelessWidget {
                     children: [
                       Container(
                         child: Text(
-                          'App Name',
+                          'HCADemo',
                           style: GoogleFonts.nunito(
                             textStyle: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -110,56 +113,11 @@ class HomePage extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Container(
-              // color: const Color.fromARGB(255, 232, 194, 194),
-              child: _buildPropertyList(
-                label: 'House',
-                allBT: '1',
-                modelProducts: product.modelHouse,
-              ),
-            ),
-            Container(
-              // color: Colors.blue,
-              child: _buildPropertyList(
-                label: 'Condo',
-                allBT: '2',
-                modelProducts: product.modelCondo,
-              ),
-            ),
-            Container(
-              // color: Colors.yellow,
-              child: Stack(
-                children: [
-                  _buildPropertyList(
-                    label: 'Apartment',
-                    allBT: '3',
-                    modelProducts: product.modelApartment,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 345, right: 17, top: 195),
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: IconButton(
-                        icon: Image.asset(
-                          'assets/chat.png',
-                          width: 40,
-                          height: 40,
-                        ),
-                        onPressed: () {
-                          Get.to(() => ChatPage());
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            Obx(() => _buildPropertyList(
+                  label: 'Search Results',
+                  allBT: '1',
+                  modelProducts: _filteredProducts,
+                )),
           ],
         ),
       ),
@@ -249,6 +207,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       child: TextField(
+        controller: _searchController,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
@@ -264,9 +223,12 @@ class HomePage extends StatelessWidget {
             ),
           ),
           prefixIcon: const SizedBox(width: 5),
-          suffixIcon: const Icon(
-            Icons.search,
-            color: Color(0xFF515050),
+          suffixIcon: IconButton(
+            icon: const Icon(
+              Icons.search,
+              color: Color(0xFF515050),
+            ),
+            onPressed: _performSearch,
           ),
         ),
       ),
@@ -302,6 +264,17 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _performSearch() {
+    String query = _searchController.text.toLowerCase();
+    List<ModelProduct> results = [];
+    for (var product in product.modelHouse) {
+      if (product.productName.toLowerCase().contains(query)) {
+        results.add(product);
+      }
+    }
+    _filteredProducts.assignAll(results);
   }
 }
 

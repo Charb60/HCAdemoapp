@@ -435,7 +435,7 @@ Widget buildPropertyTypeButton(String propertyType) {
         print(propertyType);
       },
       style: ElevatedButton.styleFrom(
-        primary: AddProductController.selectedPropertyType.value == propertyType
+        backgroundColor: AddProductController.selectedPropertyType.value == propertyType
             ? const Color(0xFF9BB8CD)
             : Colors.white,
         shape: RoundedRectangleBorder(
