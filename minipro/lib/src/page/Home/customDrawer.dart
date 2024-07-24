@@ -6,7 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/AddProduct/addProductController.dart';
 
 class CustomDrawer extends StatelessWidget {
-  CustomDrawer({Key? key}) : super(key: key);
+  final VoidCallback onSearch;
+
+  CustomDrawer({Key? key, required this.onSearch}) : super(key: key);
+  // CustomDrawer({Key? key}) : super(key: key);
 
   @override
   final _dio = Dio();
@@ -361,14 +364,15 @@ class CustomDrawer extends StatelessWidget {
                       ],
                     ),
                     child: TextButton(
-                      onPressed: () async {
-                        final rs = await _dio.get(
-                          // "http://192.168.84.58:8080/api/v1/product-and-image",
-                          "http://10.0.2.2:8080/api/v1/products",
-                          options: Options(responseType: ResponseType.stream),
-                        );
-                        print(rs.data.stream);
-                      },
+                      onPressed: onSearch,
+                      // onPressed: () async {
+                      //   final rs = await _dio.get(
+                      //     // "http://192.168.84.58:8080/api/v1/product-and-image",
+                      //     "http://10.0.2.2:8080/api/v1/products",
+                      //     options: Options(responseType: ResponseType.stream),
+                      //   );
+                      //   print(rs.data.stream);
+                      // },
                       child: Text(
                         'ค้นหา',
                         style: GoogleFonts.nunito(
@@ -435,9 +439,10 @@ Widget buildPropertyTypeButton(String propertyType) {
         print(propertyType);
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: AddProductController.selectedPropertyType.value == propertyType
-            ? const Color(0xFF9BB8CD)
-            : Colors.white,
+        backgroundColor:
+            AddProductController.selectedPropertyType.value == propertyType
+                ? const Color(0xFF9BB8CD)
+                : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

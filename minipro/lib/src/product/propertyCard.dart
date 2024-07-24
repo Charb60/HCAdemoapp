@@ -20,8 +20,8 @@ class PropertyCard extends StatelessWidget {
             ),
             child: Image.asset(
               modelProduct.image,
-              width: 170,
-              height: 135,
+              width: 380,
+              height: 180,
               fit: BoxFit.cover,
             ),
           ),
@@ -65,8 +65,7 @@ class PropertyCard extends StatelessWidget {
           // ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: Text(
-                '${modelProduct.selectedAreaRange} ตร.ว ',
+            child: Text('${modelProduct.selectedAreaRange} ตร.ว ',
                 style: GoogleFonts.nunito(
                   // fontWeight: FontWeight.bold,
                   fontSize: 10,

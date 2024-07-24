@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minipro/src/AddProduct/addProduct.dart';
@@ -113,11 +114,16 @@ class HomePage extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Obx(() => _buildPropertyList(
-                  label: 'Search Results',
-                  allBT: '1',
-                  modelProducts: _filteredProducts,
-                )),
+            Obx(
+              () => _buildPropertyList(
+                label: 'รายการทั้งหมด',
+                allBT: '1',
+                modelProducts: _filteredProducts,
+              ),
+            ),
+            const SizedBox(
+              height: 1,
+            ),
           ],
         ),
       ),
@@ -144,26 +150,27 @@ class HomePage extends StatelessWidget {
                   color: const Color(0xFF000000),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Get.to(() => AllProduct(categoryType: allBT));
-                  print(allBT.toString());
-                },
-                child: Text(
-                  'All',
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: const Color(0xFF000000),
-                  ),
-                ),
-              ),
+              // TextButton(
+              //   onPressed: () {
+              //     Get.to(() => AllProduct(categoryType: allBT));
+              //     print(allBT.toString());
+              //   },
+              //   child: Text(
+              //     'All',
+              //     style: GoogleFonts.nunito(
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 15,
+              //       color: const Color(0xFF000000),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Row(
+          // child: Row(
+          child: Column(
             children: [
               for (int index = 0; index < modelProducts.length; index++)
                 Padding(
@@ -267,17 +274,35 @@ class HomePage extends StatelessWidget {
   }
 
   void _performSearch() {
-    String query = _searchController.text.toLowerCase();
-    List<ModelProduct> results = [];
-    for (var product in product.modelHouse) {
-      if (product.productName.toLowerCase().contains(query)) {
-        results.add(product);
-      }
-    }
-    _filteredProducts.assignAll(results);
-  }
-}
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      String query = _searchController.text.toLowerCase().replaceAll(' ', '');
+      List<ModelProduct> results = [];
 
-Widget _buildDrawer() {
-  return CustomDrawer();
+      results.addAll(product.modelHouse.where((product) {
+        String productName =
+            product.productName.toLowerCase().replaceAll(' ', '');
+        return productName.contains(query);
+      }));
+
+      results.addAll(product.modelCondo.where((product) {
+        String productName =
+            product.productName.toLowerCase().replaceAll(' ', '');
+        return productName.contains(query);
+      }));
+
+      results.addAll(product.modelApartment.where((product) {
+        String productName =
+            product.productName.toLowerCase().replaceAll(' ', '');
+        return productName.contains(query);
+      }));
+
+      _filteredProducts.assignAll(results);
+    });
+  }
+
+  Widget _buildDrawer() {
+    return CustomDrawer(
+      onSearch: _performSearch,
+    );
+  }
 }
